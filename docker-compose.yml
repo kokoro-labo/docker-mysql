@@ -1,0 +1,56 @@
+version: '3'
+
+### MySQL
+
+services:
+  mysql5.7:
+    build:
+        context: ./dockerfile
+        dockerfile: Dockerfile_mysql5_7
+    container_name: mysql5.7
+    hostname: mysql5_7
+    image: db/mysql:5.7
+    volumes:
+      - ./volumes/5.7/data:/var/lib/mysql
+      - ./volumes/5.7/entrypoint:/docker-entrypoint-initdb.d
+      - ./volumes/5.7/config:/etc/mysql/conf.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=testdb
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - TZ=Asia/Tokyo
+    restart: unless-stopped
+
+  mysql8.0:
+    build:
+        context: ./dockerfile
+        dockerfile: Dockerfile_mysql8_0
+    container_name: mysql8.0
+    hostname: mysql8_0
+    image: db/mysql:8.0
+    volumes:
+      - ./volumes/8.0/data:/var/lib/mysql
+      - ./volumes/8.0/entrypoint:/docker-entrypoint-initdb.d
+      - ./volumes/8.0/config:/etc/mysql/conf.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=testdb
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - TZ=Asia/Tokyo
+    restart: unless-stopped
+
+  phpmyadmin:
+    build:
+      context: ./dockerfile
+      dockerfile: Dockerfile_phpmyadmin
+    container_name: phpmyadmin
+    image: db/phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOSTS=mysql8.0
+      - PMA_USER=root
+      - PMA_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    ports:
+      - 16000:80
