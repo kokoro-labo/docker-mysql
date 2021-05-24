@@ -6,7 +6,7 @@ services:
   mysql5.7:
     build:
         context: ./dockerfile
-        dockerfile: Dockerfile_mysql5_7
+        dockerfile: mysql5_7.Dockerfile
     container_name: mysql5.7
     hostname: mysql5_7
     image: db/mysql:5.7
@@ -25,7 +25,7 @@ services:
   mysql8.0:
     build:
         context: ./dockerfile
-        dockerfile: Dockerfile_mysql8_0
+        dockerfile: mysql8_0.Dockerfile
     container_name: mysql8.0
     hostname: mysql8_0
     image: db/mysql:8.0
@@ -44,7 +44,7 @@ services:
   phpmyadmin:
     build:
       context: ./dockerfile
-      dockerfile: Dockerfile_phpmyadmin
+      dockerfile: phpmyadmin.Dockerfile
     container_name: phpmyadmin
     image: db/phpmyadmin
     environment:
@@ -54,3 +54,4 @@ services:
       - PMA_PASSWORD=${MYSQL_ROOT_PASSWORD}
     ports:
       - 16000:80
+    restart: unless-stopped
